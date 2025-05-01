@@ -80,9 +80,7 @@ public class Cuenta {
   }
 
   public List<Movimiento> getMovimientos() {
-    // Code smell 11 - se deberia devolver una copia y no la referencia de la lista de movimientos,
-    // ya que sino se podria modificar desde afuera de la clase lo cual romperia el enccapsulamiento
-    return movimientos;
+    return new ArrayList<>(movimientos);
   }
 
   // Code smell 12 - no se deberia poder setear de afuera de la clase los movimientos
