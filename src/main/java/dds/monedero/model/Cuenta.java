@@ -87,9 +87,4 @@ public class Cuenta {
     return saldo;
   }
 
-  // Code smell 13 - no se deberia poder setear de afuera de la clase el saldo
-  public void setSaldo(double saldo) {
-    this.saldo = saldo;
-  }
-
 }
