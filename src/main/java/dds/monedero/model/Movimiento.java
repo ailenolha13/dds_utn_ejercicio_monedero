@@ -43,11 +43,6 @@ public class Movimiento {
   public boolean isExtraccion() {
     return !esDeposito;
   }
-  // Code smell 14 - Modificar el saldo o agregar el movimiento a la cuenta deberia ser responsabilidad de la clase Cuenta
-  public void agregateA(Cuenta cuenta) {
-    cuenta.setSaldo(calcularValor(cuenta));
-    cuenta.agregarMovimiento(fecha, monto, esDeposito);
-  }
   // Code smell 16 - El nombre del metodo es poco expresivo y no comunica
   // si esta calculando un nuevo saldo o simplemente el valor del movimiento
   // Code smell 17 - acoplamiento con cuenta
