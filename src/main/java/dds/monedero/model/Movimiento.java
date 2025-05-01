@@ -43,14 +43,4 @@ public class Movimiento {
   public boolean isExtraccion() {
     return !esDeposito;
   }
-  // Code smell 16 - El nombre del metodo es poco expresivo y no comunica
-  // si esta calculando un nuevo saldo o simplemente el valor del movimiento
-  // Code smell 17 - acoplamiento con cuenta
-  public double calcularValor(Cuenta cuenta) {
-    if (esDeposito) {
-      return cuenta.getSaldo() + getMonto();
-    } else {
-      return cuenta.getSaldo() - getMonto();
-    }
-  }
 }
