@@ -20,23 +20,27 @@ public class Cuenta {
   public Cuenta(double montoInicial) {
     this.saldo = montoInicial;
   }
-  
+
   public void poner(double monto) {
-    // Code smell 3 - se podria usar un try-catch y mejorar el manejo de errores y ademas ser mas
-    // expresivos y declarativos con la responsabilidad del metodo
-    // Code smell 4 - los mensajes hardcodeados de las excepcion deberian estar en la implementacion de la excepcion
+    validarMontoPositivo(monto);
+    validarLimiteDepositosDiarios();
+    // Code smell 6 - no se esta utilizando el metodo para agregar el movimiento
+    new Movimiento(LocalDate.now(), monto, true).agregateA(this);
+  }
+
+  private void validarMontoPositivo(double monto) {
     if (monto <= 0) {
+      // Code smell 4 - los mensajes hardcodeados de las excepcion deberian estar en la implementacion de la excepcion
       throw new MontoNegativoException(monto + ": el monto a ingresar debe ser un valor positivo");
     }
-    // Code smell 5 - la implementacion de la validacion de la cantidad de movimientos podria estar en otro lado
+  }
+
+  private void validarLimiteDepositosDiarios(){
     if (getMovimientos().stream()
         .filter(movimiento -> movimiento.fueDepositado(LocalDate.now()))
         .count() >= 3) {
       throw new MaximaCantidadDepositosException("Ya excedio los " + 3 + " depositos diarios");
     }
-
-    // Code smell 6 - no se esta utilizando el metodo para agregar el movimiento
-    new Movimiento(LocalDate.now(), monto, true).agregateA(this);
   }
 
   public void sacar(double monto) {
