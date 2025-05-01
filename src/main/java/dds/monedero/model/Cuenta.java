@@ -83,11 +83,6 @@ public class Cuenta {
     return new ArrayList<>(movimientos);
   }
 
-  // Code smell 12 - no se deberia poder setear de afuera de la clase los movimientos
-  public void setMovimientos(List<Movimiento> movimientos) {
-    this.movimientos = movimientos;
-  }
-
   public double getSaldo() {
     return saldo;
   }
