@@ -59,7 +59,7 @@ public class Cuenta {
   }
 
   private void validarLimiteExtraccionDiaria(double montoAExtraer){
-    var montoExtraidoHoy = getMontoExtraidoA(LocalDate.now());
+    var montoExtraidoHoy = getMontoExtraidoPorFecha(LocalDate.now());
     var topeMaximo = 1000;
     var limite = topeMaximo - montoExtraidoHoy;
     if (montoAExtraer > limite) {
@@ -72,8 +72,7 @@ public class Cuenta {
     movimientos.add(movimiento);
   }
 
-  // Code smell 10 - el nombre del metodo podria ser mas expresivo
-  public double getMontoExtraidoA(LocalDate fecha) {
+  public double getMontoExtraidoPorFecha(LocalDate fecha) {
     return getMovimientos().stream()
         .filter(movimiento -> !movimiento.isDeposito() && movimiento.getFecha().equals(fecha))
         .mapToDouble(Movimiento::getMonto)
