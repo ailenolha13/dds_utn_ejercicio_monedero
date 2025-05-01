@@ -22,10 +22,10 @@ public class Cuenta {
   }
 
   public void poner(double monto) {
+    var esDeposito = true;
     validarMontoPositivo(monto);
     validarLimiteDepositosDiarios();
-    // Code smell 6 - no se esta utilizando el metodo para agregar el movimiento
-    new Movimiento(LocalDate.now(), monto, true).agregateA(this);
+    agregarMovimiento(LocalDate.now(), monto, esDeposito);
   }
 
   private void validarMontoPositivo(double monto) {
@@ -62,8 +62,8 @@ public class Cuenta {
     new Movimiento(LocalDate.now(), monto, false).agregateA(this);
   }
 
-  public void agregarMovimiento(LocalDate fecha, double cuanto, boolean esDeposito) {
-    var movimiento = new Movimiento(fecha, cuanto, esDeposito);
+  public void agregarMovimiento(LocalDate fecha, double monto, boolean esDeposito) {
+    var movimiento = new Movimiento(fecha, monto, esDeposito);
     movimientos.add(movimiento);
   }
 
