@@ -12,7 +12,7 @@ import java.util.List;
 public class Cuenta {
   private double saldo;
   private List<Movimiento> movimientos = new ArrayList<>();
-  
+
   public Cuenta() {
     this.saldo = 0;
   }
@@ -20,14 +20,13 @@ public class Cuenta {
   public Cuenta(double montoInicial) {
     this.saldo = montoInicial;
   }
-
-  // Code smell 2 - el nombre del parametro, "cuanto", es poco expresivo
-  public void poner(double cuanto) {
+  
+  public void poner(double monto) {
     // Code smell 3 - se podria usar un try-catch y mejorar el manejo de errores y ademas ser mas
     // expresivos y declarativos con la responsabilidad del metodo
     // Code smell 4 - los mensajes hardcodeados de las excepcion deberian estar en la implementacion de la excepcion
-    if (cuanto <= 0) {
-      throw new MontoNegativoException(cuanto + ": el monto a ingresar debe ser un valor positivo");
+    if (monto <= 0) {
+      throw new MontoNegativoException(monto + ": el monto a ingresar debe ser un valor positivo");
     }
     // Code smell 5 - la implementacion de la validacion de la cantidad de movimientos podria estar en otro lado
     if (getMovimientos().stream()
@@ -37,26 +36,26 @@ public class Cuenta {
     }
 
     // Code smell 6 - no se esta utilizando el metodo para agregar el movimiento
-    new Movimiento(LocalDate.now(), cuanto, true).agregateA(this);
+    new Movimiento(LocalDate.now(), monto, true).agregateA(this);
   }
 
-  public void sacar(double cuanto) {
+  public void sacar(double monto) {
     // Code smell 7 - sucede lo mismo que code smell 3, 4
-    if (cuanto <= 0) {
-      throw new MontoNegativoException(cuanto + ": el monto a ingresar debe ser un valor positivo");
+    if (monto <= 0) {
+      throw new MontoNegativoException(monto + ": el monto a ingresar debe ser un valor positivo");
     }
-    if (getSaldo() - cuanto < 0) {
+    if (getSaldo() - monto < 0) {
       throw new SaldoMenorException("No puede sacar mas de " + getSaldo() + " $");
     }
     // Code smell 8 - sucede lo mismo que code smell 5
     var montoExtraidoHoy = getMontoExtraidoA(LocalDate.now());
     var limite = 1000 - montoExtraidoHoy;
-    if (cuanto > limite) {
+    if (monto > limite) {
       throw new MaximoExtraccionDiarioException(
           "No puede extraer mas de $ " + 1000 + " diarios, " + "límite: " + limite);
     }
     // Code smell 9 - sucede lo mismo que code smell 6
-    new Movimiento(LocalDate.now(), cuanto, false).agregateA(this);
+    new Movimiento(LocalDate.now(), monto, false).agregateA(this);
   }
 
   public void agregarMovimiento(LocalDate fecha, double cuanto, boolean esDeposito) {
