@@ -10,16 +10,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Cuenta {
-  private double saldo = 0;
+  private double saldo;
   private List<Movimiento> movimientos = new ArrayList<>();
-
-  // Code smell 1 - se esta duplicando el saldo = 0
+  
   public Cuenta() {
-    saldo = 0;
+    this.saldo = 0;
   }
 
   public Cuenta(double montoInicial) {
-    saldo = montoInicial;
+    this.saldo = montoInicial;
   }
 
   // Code smell 2 - el nombre del parametro, "cuanto", es poco expresivo
