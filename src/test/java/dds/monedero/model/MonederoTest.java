@@ -25,7 +25,9 @@ public class MonederoTest {
   @Test
   @DisplayName("Es posible poner $1500 en una cuenta vacía")
   void Poner() {
+    assertEquals(0, cuenta.getSaldo());
     cuenta.poner(1500);
+    assertEquals(1500, cuenta.getSaldo());
   }
 
   @Test
@@ -51,8 +53,11 @@ public class MonederoTest {
   @DisplayName("Es posible realizar múltiples depósitos consecutivos")
   void TresDepositos() {
     cuenta.poner(1500);
+    assertEquals(1500, cuenta.getSaldo());
     cuenta.poner(456);
+    assertEquals(1956, cuenta.getSaldo());
     cuenta.poner(1900);
+    assertEquals(3856, cuenta.getSaldo());
   }
 
   @Test
