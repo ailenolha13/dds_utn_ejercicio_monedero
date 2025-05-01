@@ -30,33 +30,33 @@ public class Cuenta {
 
   private void validarMontoPositivo(double monto) {
     if (monto <= 0) {
-      // Code smell 4 - los mensajes hardcodeados de las excepcion deberian estar en la implementacion de la excepcion
-      throw new MontoNegativoException(monto + ": el monto a ingresar debe ser un valor positivo");
+      throw new MontoNegativoException(monto);
     }
   }
 
   private void validarLimiteDepositosDiarios(){
+    var limite = 3;
     if (getMovimientos().stream()
         .filter(movimiento -> movimiento.fueDepositado(LocalDate.now()))
-        .count() >= 3) {
-      throw new MaximaCantidadDepositosException("Ya excedio los " + 3 + " depositos diarios");
+        .count() >= limite) {
+      throw new MaximaCantidadDepositosException(limite);
     }
   }
 
   public void sacar(double monto) {
     // Code smell 7 - sucede lo mismo que code smell 3, 4
     if (monto <= 0) {
-      throw new MontoNegativoException(monto + ": el monto a ingresar debe ser un valor positivo");
+      throw new MontoNegativoException(monto);
     }
     if (getSaldo() - monto < 0) {
-      throw new SaldoMenorException("No puede sacar mas de " + getSaldo() + " $");
+      throw new SaldoMenorException(getSaldo());
     }
     // Code smell 8 - sucede lo mismo que code smell 5
     var montoExtraidoHoy = getMontoExtraidoA(LocalDate.now());
-    var limite = 1000 - montoExtraidoHoy;
+    var baseLimite = 1000;
+    var limite = baseLimite - montoExtraidoHoy;
     if (monto > limite) {
-      throw new MaximoExtraccionDiarioException(
-          "No puede extraer mas de $ " + 1000 + " diarios, " + "límite: " + limite);
+      throw new MaximoExtraccionDiarioException(baseLimite, limite);
     }
     // Code smell 9 - sucede lo mismo que code smell 6
     new Movimiento(LocalDate.now(), monto, false).agregateA(this);
