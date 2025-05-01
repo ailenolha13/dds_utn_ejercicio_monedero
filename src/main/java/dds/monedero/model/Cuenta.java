@@ -46,13 +46,7 @@ public class Cuenta {
   public void sacar(double monto) {
     validarMontoPositivo(monto);
     validarSaldoDisponible(monto);
-    // Code smell 8 - sucede lo mismo que code smell 5
-    var montoExtraidoHoy = getMontoExtraidoA(LocalDate.now());
-    var baseLimite = 1000;
-    var limite = baseLimite - montoExtraidoHoy;
-    if (monto > limite) {
-      throw new MaximoExtraccionDiarioException(baseLimite, limite);
-    }
+    validarLimiteExtraccionDiaria(monto);
     // Code smell 9 - sucede lo mismo que code smell 6
     new Movimiento(LocalDate.now(), monto, false).agregateA(this);
   }
@@ -61,6 +55,15 @@ public class Cuenta {
     var saldoDisponible = getSaldo();
     if ((saldoDisponible - montoAExtraer) < 0) {
       throw new SaldoMenorException(saldoDisponible);
+    }
+  }
+
+  private void validarLimiteExtraccionDiaria(double montoAExtraer){
+    var montoExtraidoHoy = getMontoExtraidoA(LocalDate.now());
+    var topeMaximo = 1000;
+    var limite = topeMaximo - montoExtraidoHoy;
+    if (montoAExtraer > limite) {
+      throw new MaximoExtraccionDiarioException(topeMaximo, limite);
     }
   }
 
