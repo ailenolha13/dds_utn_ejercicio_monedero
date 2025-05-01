@@ -44,11 +44,11 @@ public class Cuenta {
   }
 
   public void sacar(double monto) {
+    var esDeposito = false;
     validarMontoPositivo(monto);
     validarSaldoDisponible(monto);
     validarLimiteExtraccionDiaria(monto);
-    // Code smell 9 - sucede lo mismo que code smell 6
-    new Movimiento(LocalDate.now(), monto, false).agregateA(this);
+    agregarMovimiento(LocalDate.now(), monto, esDeposito);
   }
 
   private void validarSaldoDisponible(double montoAExtraer){
