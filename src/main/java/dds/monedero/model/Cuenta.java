@@ -44,13 +44,8 @@ public class Cuenta {
   }
 
   public void sacar(double monto) {
-    // Code smell 7 - sucede lo mismo que code smell 3, 4
-    if (monto <= 0) {
-      throw new MontoNegativoException(monto);
-    }
-    if (getSaldo() - monto < 0) {
-      throw new SaldoMenorException(getSaldo());
-    }
+    validarMontoPositivo(monto);
+    validarSaldoDisponible(monto);
     // Code smell 8 - sucede lo mismo que code smell 5
     var montoExtraidoHoy = getMontoExtraidoA(LocalDate.now());
     var baseLimite = 1000;
@@ -60,6 +55,13 @@ public class Cuenta {
     }
     // Code smell 9 - sucede lo mismo que code smell 6
     new Movimiento(LocalDate.now(), monto, false).agregateA(this);
+  }
+
+  private void validarSaldoDisponible(double montoAExtraer){
+    var saldoDisponible = getSaldo();
+    if ((saldoDisponible - montoAExtraer) < 0) {
+      throw new SaldoMenorException(saldoDisponible);
+    }
   }
 
   public void agregarMovimiento(LocalDate fecha, double monto, boolean esDeposito) {
