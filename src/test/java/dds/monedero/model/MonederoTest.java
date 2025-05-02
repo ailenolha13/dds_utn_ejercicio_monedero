@@ -113,7 +113,7 @@ public class MonederoTest {
     cuenta.poner(1000);
     assertEquals(1, cuenta.getMovimientos().size());
     assertTrue(cuenta.getMovimientos().get(0).fueDepositado(LocalDate.now()));
-    assertEquals(100, cuenta.getMovimientos().get(0).getMonto());
+    assertEquals(1000, cuenta.getMovimientos().get(0).getMonto());
   }
 
   @Test

@@ -26,6 +26,7 @@ public class Cuenta {
     validarMontoPositivo(monto);
     validarLimiteDepositosDiarios();
     agregarMovimiento(LocalDate.now(), monto, esDeposito);
+    setSaldo(saldo + monto);
   }
 
   private void validarMontoPositivo(double monto) {
@@ -44,11 +45,12 @@ public class Cuenta {
   }
 
   public void sacar(double monto) {
-    var esDeposito = false;
-    validarMontoPositivo(monto);
-    validarSaldoDisponible(monto);
-    validarLimiteExtraccionDiaria(monto);
-    agregarMovimiento(LocalDate.now(), monto, esDeposito);
+      var esDeposito = false;
+      validarMontoPositivo(monto);
+      validarSaldoDisponible(monto);
+      validarLimiteExtraccionDiaria(monto);
+      agregarMovimiento(LocalDate.now(), monto, esDeposito);
+      setSaldo(saldo - monto);
   }
 
   private void validarSaldoDisponible(double montoAExtraer){
@@ -85,6 +87,10 @@ public class Cuenta {
 
   public double getSaldo() {
     return saldo;
+  }
+
+  private void setSaldo(double monto) {
+    this.saldo = monto;
   }
 
 }
